@@ -7,7 +7,7 @@ import { DiContainer } from '@engine/di/DiContainer';
 import { EngineDi } from '@engine/di/EngineDi';
 
 import { AssetManager } from '../assets';
-import { AudioLoader, FontLoader, ImageLoader, JsonLoader } from '../assets';
+import { AudioLoader, FontLoader, ImageLoader, JsonLoader, BinaryLoader, TextLoader } from '../assets';
 import { AudioManager } from '../audio';
 import { CommandBus } from '../commands/CommandBus';
 import { EventBus } from '../events/EventBus';
@@ -153,5 +153,7 @@ export class EngineSubsystemFactory {
     assets.registerLoader('font', new FontLoader());
     assets.registerLoader('image', new ImageLoader());
     assets.registerLoader('json', new JsonLoader());
+    assets.registerLoader('binary', new BinaryLoader());
+    assets.registerLoader('text', new TextLoader());
   }
 }

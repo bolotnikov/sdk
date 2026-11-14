@@ -1,6 +1,6 @@
 {
   "name": "@gamedevland/engine",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "description": "HTML5 game engine SDK for AI-assisted web game development.",
   "license": "MIT",
@@ -24,12 +24,17 @@
     "CHANGELOG.md",
     "LICENSE",
     "MIGRATION_RENDERERS.md",
-    "MIGRATION_RUNTIME.md"
+    "MIGRATION_RUNTIME.md",
+    "vendor/rigby2d/LICENSE-MIT"
   ],
   "publishConfig": {
     "access": "public"
   },
   "exports": {
+    "./debug": {
+      "types": "./dist/types/debug/index.d.ts",
+      "import": "./dist/debug.js"
+    },
     ".": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/sdk.js"
@@ -129,6 +134,10 @@
     "./renderers/hybrid": {
       "types": "./dist/types/renderers/hybrid/index.d.ts",
       "import": "./dist/renderers/hybrid.js"
+    },
+    "./renderers/pixi/rigby": {
+      "types": "./dist/types/renderers/pixi/rigby/index.d.ts",
+      "import": "./dist/renderers/pixi/rigby.js"
     }
   },
   "scripts": {

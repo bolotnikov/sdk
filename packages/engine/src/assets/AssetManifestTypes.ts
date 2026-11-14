@@ -11,6 +11,8 @@ export interface AssetGlobInput {
   images: AssetGlobRecord;
   fonts: AssetGlobRecord;
   models?: AssetGlobRecord;
+  binary?: AssetGlobRecord;
+  text?: AssetGlobRecord;
 }
 
 export interface AssetIdStrategy {

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.15 — 2026-11-14
+
+- Add optional Rigby2D skeletal animation through `/renderers/pixi/rigby`, with a declarative `RigbySkeleton` layout node, engine-clock playback and explicit resource ownership.
+- Bundle the official Rigby2D 0.5.1 Pixi runtime with its MIT notice; validate atlas pages, regions, skins and sequences before mesh creation. Support straight-alpha, non-repeating atlases with quarter-turn packing.
+- Add binary/text asset loaders and manifest bundles; isolate texture sampling variants from shared defaults.
+- Apply playback/restart poses while paused, preserve loop settings and release owned geometry without destroying shared textures.
+- Add `/debug` with live scene/FSM/layout/DI inspection, pause/resume, recent errors and a disposable `window.GameDebug` binding.
+- Add opt-in `?silentTest=1` SDK audio suppression and read-only DOM debug snapshots for isolated browser tests, without changing saved player preferences.
+- Add regression coverage for Rigby imports/playback/cleanup, texture sampling, debugging and silent test mode; document the public contracts.
+
 ## 0.0.14 — 2026-11-11
 
 - Add declarative `ThreeViewport` Pixi elements with isolated Three layouts, camera projection resize, on-demand/continuous presentation and owned resource cleanup.

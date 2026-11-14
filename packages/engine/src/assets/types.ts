@@ -6,7 +6,7 @@ export type AssetId = string;
 /**
  * Enumerates supported asset kinds. A loader must be registered per type.
  */
-export type AssetType = 'image' | 'audio' | 'json' | 'font' | 'model';
+export type AssetType = 'image' | 'audio' | 'json' | 'font' | 'model' | 'binary' | 'text';
 
 /**
  * Describes a single asset input for the loader pipeline.

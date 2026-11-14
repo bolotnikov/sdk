@@ -1,14 +1,73 @@
 # @gamedevland/engine
 
+## Development debugging (since 0.0.15)
+
+Use the opt-in `@gamedevland/engine/debug` entry point for development inspection.
+Tooling 0.2.4 includes the complete DEV-only wiring in generated projects.
+
+```ts
+const engine = await Engine.run('#app', GameConfiguration.config);
+if (import.meta.env.DEV) {
+  const { BrowserGameDebug } = await import('@gamedevland/engine/debug');
+  const binding = BrowserGameDebug.attach(engine);
+  import.meta.hot?.dispose(async () => {
+    binding.dispose();
+    await engine.destroy();
+  });
+}
+```
+
+After startup, `window.GameDebug` provides `.engine` (the concrete engine),
+`.scene`, `.layout`, `.fsm`, `.di` (scene DI), `.errors`, `.snapshot()`,
+`.pause()` and `.resume()`. Global services remain available through `.engine.di`.
+Scene getters resolve the current runtime on every access, including transitions;
+required layout/DI queries fail fast when unavailable. Snapshots use the scene key
+when available and copy screen sizes and the error list. Error history starts at
+attachment, retains the latest 100 SDK errors and ignores per-frame timing records.
+Pause/resume use the normal engine pause gate; platform/background/ad gates remain active.
+
+`GameDebugService` is a renderer-neutral console Facade depending on a narrow
+runtime port; it has no DOM/global side effects. `BrowserGameDebug` is the optional
+Adapter owning the `window` binding. Repeated `attach` for the same engine/target
+returns the same binding; a conflicting global fails fast. `dispose()` removes only
+its own global, unsubscribes diagnostics and is safe to repeat. Dispose the binding
+before any explicit engine teardown as well as HMR.
+
+Keep game-specific debug commands in the game and mutate gameplay through its
+events, commands or services. Function-local variables/private `#fields` need
+DevTools breakpoints. Startup errors before attachment remain browser-console errors.
+Use the development-only dynamic import above and verify no `GameDebug` code remains
+in production output. The module never attaches a global on import.
+
+### Isolated silent browser tests
+
+In a development-only dynamic import, call `BrowserGameTestMode.configure()`
+**before** `Engine.run`. When the URL contains `?silentTest=1`, SDK/Howler output
+is suppressed for the lifetime of that page, including later player/platform
+unmute calls. Reload without the query to return to normal output. Saved player
+preferences and system/browser volume are unchanged. This gate only covers audio
+routed through the SDK; unrelated HTML media or direct Web Audio need separate muting.
+
+After attaching `BrowserGameDebug`, construct `new GameDebugDomBridge(binding.debug,
+() => ({ ...binding.debug.snapshot(), silentTest: BrowserGameTestMode.silent }))`.
+The disposable bridge creates a hidden `output#game-debug`; its `data-state`
+attribute contains a read-only JSON snapshot, refreshed every 100 ms. A consumer
+can supply a serializable game-specific snapshot callback. The bridge exposes no
+command/evaluation endpoint and reports serialization errors as `bridgeError`.
+Dispose the bridge before the binding/engine. Both helpers stay inside the DEV
+branch; generated templates contain the complete wiring. Browser automation can
+inspect DOM snapshots and use actual UI/keyboard input without accessing page globals.
+
 ## Renderer modules
 
 The main SDK supports Pixi, Three and a Three world with a Pixi UI overlay.
 Engine `0.0.14` adds declarative `ThreeViewport` layouts, owned embedded Three scenes
-and pointer lifecycle recovery. Tooling `0.2.3` requires this engine as a peer.
+and pointer lifecycle recovery. Engine `0.0.15` adds optional Rigby2D animation and
+DEV inspection; tooling `0.2.4` requires engine `0.0.15` as a peer.
 Run `npm run pack:local` in the SDK workspace for compiled tarballs, checksums
 and installation instructions.
 
-This version changes renderer-facing public APIs. Existing Pixi games need the
+Upgrading from before 0.0.13 changes renderer-facing public APIs. Existing Pixi games need the
 migration in [MIGRATION_RENDERERS.md](MIGRATION_RENDERERS.md) before upgrading.
 Runtime ownership, storage and optional physics changes are described in
 [MIGRATION_RUNTIME.md](MIGRATION_RUNTIME.md).
@@ -398,3 +457,75 @@ Visible embedded games do not pause on keyboard focus loss. Runtime page inactiv
 Scene hook deadlines count visible-page time. Pixi prepares hidden resources in bounded timer batches,
 without relying on animation frames; renderer warmup rejects on cleanup or WebGL context loss.
 Lifecycle diagnostics include the current backend preparation stage.
+
+
+## Optional Rigby2D skeletal animation (PixiJS)
+
+Import `RigbyPixiModule` and `RigbySkeleton` from
+`@gamedevland/engine/renderers/pixi/rigby`. Add `new RigbyPixiModule()` to
+`system.modules` with the Pixi renderer. Other renderer entry points do not import
+Rigby2D. This adapter uses the unmodified official Rigby2D 0.5.1 PixiJS runtime
+(MIT; license included in `vendor/rigby2d/LICENSE-MIT`).
+
+`AssetManifestBuilder` accepts optional `binary` and `text` URL maps, producing
+bundles of the same names. Preload them and the atlas images before scene layout
+creation. `.skel` uses `binary`, skeleton `.json` can use an ordinary JSON bundle,
+`.atlas` uses `text`, and page images use `images`. Every page URL is explicit in
+the manifest, so bundler hashes work without a second runtime network loader.
+
+```json
+{
+  "type": "RigbySkeleton",
+  "props": {
+    "skeleton": "characters/hero/hero.skel",
+    "atlas": "characters/hero/hero.atlas",
+    "pages": [{ "name": "hero.webp", "asset": "characters/hero/hero.webp" }],
+    "animation": "swim",
+    "loop": true,
+    "timeScale": 1
+  }
+}
+```
+
+The leaf node exposes `play(name, loop = true)`, `restart()` (preserves the current
+clip and loop mode), and `setTimeScale(value)` (zero
+freezes the current pose), plus read-only `animation`, `animationTime`, `timeScale`
+and `meshCount`. Components/actions own gameplay-driven transforms and playback
+changes. `animationTime` is elapsed playback time since the last `play`, before
+loop wrapping. Author transforms in layout/prefab JSON and keep collision geometry
+independent of the artwork.
+
+The node advances once through the engine layout update; the upstream shared
+ticker is disabled. Engine pause, scene exit and teardown therefore gate the same
+clock. The node releases its meshes, geometry and buffers idempotently; shared
+atlas textures remain owned by `TextureAssetResolver` until engine teardown.
+Missing/mismatched pages, missing regions (including inactive skins and all sequence
+frames), duplicate names, invalid atlas bounds, unknown animations and invalid node
+properties fail before mesh creation. `play` and `restart` immediately apply the
+initial pose even when speed is zero. Negative/non-finite update deltas and speed
+changes after disposal are rejected. Parsing is delegated to the upstream binary/JSON reader and validator.
+The adapter never fetches files and does not share mutable animation state between
+node instances. Repeated instances reuse asset bytes/textures; each owns its pose.
+
+
+### Texture ownership and export contract
+
+`TextureAssetResolver.getRequiredTexture(id, sampling?)` accepts an optional
+validated `{ scaleMode, alphaMode }`. The default texture and each explicit
+sampling variant have distinct GPU sources, cached by decoded image identity and
+settings. Rigby resolves these variants through the same SDK facade; it never
+changes another node's source. GPU sources are released by the resolver, while
+the asset manager alone owns and closes the decoded image. Reloading/unloading an
+asset cannot return a cached texture for its previous bitmap.
+
+The supported Rigby atlas import contract is straight alpha (`pma: false`), no
+repetition and quarter-turn packing. This matches the Rigby2D editor's export used
+by the game. Premultiplied input requires a distinct image decode policy: changing
+a GPU flag after default ImageBitmap decoding cannot recover the encoded RGB.
+Such files are rejected before resource resolution, as are repeated atlases whose
+sampling semantics are not supported by this adapter. The generic sampling options
+configure GPU sources; they do not transform or re-decode image pixels.
+
+Regression tests cover JSON and real binary weighted meshes, independent poses,
+frozen playback restarts, per-texture sampling isolation, region/skin/sequence
+references, malformed bounds and idempotent geometry/texture/bitmap cleanup.
