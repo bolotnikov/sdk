@@ -2,17 +2,18 @@
 
 ## Changelog
 
-**0.2.3 — 2026-11-11**
+**0.2.4 — 2026-11-14**
 
-- Require engine 0.0.14 as a peer, including declarative ThreeViewport layouts.
-- Keep `gamedevland create` for blank projects, with dependency installation and web/CrazyGames builds.
+- Require engine 0.0.15 as the shared peer dependency.
+- Generate DEV-only GameDebug, silent test mode and DOM snapshots with HMR cleanup.
+- Ignore raw art/reference roots and verify debug code stays out of production builds.
 
 [Full changelog](https://github.com/gamedevland/sdk/blob/main/packages/vite/CHANGELOG.md).
 
 ## Create a blank game
 
 ```sh
-npx --yes --package @gamedevland/vite@0.2.3 gamedevland create my-game
+npx --yes --package @gamedevland/vite@0.2.4 gamedevland create my-game
 cd my-game
 npm run dev
 ```
@@ -131,7 +132,7 @@ Earlier npm releases retain the license included in their respective archives. T
 
 ## Renderer SDK compatibility
 
-Tooling `0.2.3` uses engine `0.0.14` as a peer dependency. The packaged project
+Tooling `0.2.4` uses engine `0.0.15` as a peer dependency. The packaged project
 selects PixiRendererModule explicitly and uses the public renderer entry point.
 
 The upstream Poki CLI currently depends on an older glob chain. Keep this

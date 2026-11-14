@@ -17,6 +17,13 @@ test('create produces a blank portable project from packaged templates', async t
   assert.equal(pkg.dependencies['@gamedevland/engine'], tooling.peerDependencies['@gamedevland/engine']);
   assert.equal(pkg.devDependencies['@gamedevland/vite'], tooling.version);
   assert.match(await readFile(path.join(root, '.gitignore'), 'utf8'), /node_modules/);
+  const init = spawnSync('git', ['init', '--quiet'], { cwd: root, encoding: 'utf8' });
+  assert.equal(init.status, 0, init.stderr);
+  const sources = ['art/raw.png', 'Art/raw.png', 'references/example.mp4', 'References/example.mp4'];
+  const ignored = spawnSync('git', ['check-ignore', '--', ...sources], { cwd: root, encoding: 'utf8' });
+  assert.equal(ignored.status, 0, ignored.stderr);
+  assert.deepEqual(ignored.stdout.trim().split('\n'), sources);
+  assert.equal(spawnSync('git', ['check-ignore', '--', 'game/assets/images/ready.webp'], { cwd: root }).status, 1);
   assert.match(await readFile(path.join(root, '.env.crazygames'), 'utf8'), /VITE_PLATFORM=crazygames/);
   const layout = JSON.parse(await readFile(path.join(root, 'game/assets/json/layouts/scenes/main/layout.json'), 'utf8'));
   assert.deepEqual(layout, { root: { type: 'Container', children: {} } });

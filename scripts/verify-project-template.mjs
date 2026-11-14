@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,6 +36,13 @@ try {
   assert(!web.includes('crazygames-sdk'));
   assert.equal((crazy.match(/crazygames-sdk-v3\.js/g) ?? []).length, 1);
   assert.match(crazy, /\.\/assets\//);
+  for (const output of ['dist/assets', 'dist/crazygames/assets']) {
+    for (const file of await readdir(path.join(project, output))) {
+      if (!file.endsWith('.js')) continue;
+      const source = await readFile(path.join(project, output, file), 'utf8');
+      assert(!source.includes('GameDebug'), `Production output contains debug code: ${output}/${file}`);
+    }
+  }
   // Verify template lookup from the actually installed npm archive as well.
   execFileSync(process.execPath, [path.join(project, 'node_modules/@gamedevland/vite/dist/cli/entry.js'),
     'create', 'from-package', '--no-install'], { cwd: scratch, stdio: 'inherit' });

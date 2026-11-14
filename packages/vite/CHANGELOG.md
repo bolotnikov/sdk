@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.4 — 2026-11-14
+
+- Require engine 0.0.15 as the shared peer dependency.
+- Generate development-only `window.GameDebug`, silent browser test mode and read-only DOM snapshots, with cleanup before HMR teardown.
+- Ignore root `art/`/`Art/` and `references/`/`References/`; document SDK extraction and quiet browser testing rules.
+- Verify generated web/CrazyGames builds exclude development debug code.
+
 ## 0.2.3 — 2026-11-11
 
 - Require engine 0.0.14 as a peer so new projects and Rings consumers use the declarative ThreeViewport API with one engine copy.

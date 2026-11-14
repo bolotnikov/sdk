@@ -11,6 +11,8 @@ export class DefaultBundleBuildPolicy implements BundleBuildPolicy {
       { name: 'images', type: 'image', files: input.images },
       { name: 'fonts', type: 'font', files: input.fonts },
       { name: 'models', type: 'model', files: input.models ?? {} },
+      { name: 'binary', type: 'binary', files: input.binary ?? {} },
+      { name: 'text', type: 'text', files: input.text ?? {} },
     ];
   }
 }

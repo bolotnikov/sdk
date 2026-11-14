@@ -1,4 +1,5 @@
 import { Howl, Howler } from 'howler';
+import { AudioOutputGate } from '../AudioOutputGate';
 
 import { EngineErrorCode, EngineErrorFactory, EngineSubsystem } from '@engine/errors';
 
@@ -217,7 +218,7 @@ export class HowlerAudioBackend implements AudioBackend {
   setMuted(muted: boolean, channel?: AudioChannel): void {
     if (channel === undefined) {
       this.globalMuted = muted;
-      Howler.mute(muted);
+      Howler.mute(AudioOutputGate.resolveMuted(muted));
       this.syncAllHandles();
       if (!muted) this.retryPendingMusic();
       return;
