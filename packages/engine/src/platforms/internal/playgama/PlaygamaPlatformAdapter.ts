@@ -72,6 +72,14 @@ export class PlaygamaPlatformAdapter implements PlatformAdapter {
     return ads !== undefined && (ads.isInterstitialSupported || ads.isRewardedSupported);
   }
 
+  isInterstitialAvailable(): boolean {
+    return this.initialized && !this.disposed && this.sdk?.advertisement.isInterstitialSupported === true;
+  }
+
+  isRewardedAvailable(): boolean {
+    return this.initialized && !this.disposed && this.sdk?.advertisement.isRewardedSupported === true;
+  }
+
   setRuntimeHooks(hooks: PlatformRuntimeHooks): void {
     this.runtimeHooks = hooks;
     this.applyRuntimeState();

@@ -2,6 +2,11 @@
 
 ## Changelog
 
+**0.2.5 — 2026-11-17**
+
+- Require engine 0.0.16 and generate projects with independent rewarded/interstitial capability support.
+
+
 **0.2.4 — 2026-11-14**
 
 - Require engine 0.0.15 as the shared peer dependency.

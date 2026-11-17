@@ -529,3 +529,11 @@ configure GPU sources; they do not transform or re-decode image pixels.
 Regression tests cover JSON and real binary weighted meshes, independent poses,
 frozen playback restarts, per-texture sampling isolation, region/skin/sequence
 references, malformed bounds and idempotent geometry/texture/bitmap cleanup.
+
+### Per-format ad availability
+
+`PlatformManager.isInterstitialAvailable()` and `.isRewardedAvailable()` expose
+format support independently. Playgama reads the corresponding Bridge support flag;
+other adapters retain their existing advertising capability fallback. Both queries
+return false before initialization and after disposal. Hide optional rewarded UI
+when its format is unavailable; keep interstitial placements independent.

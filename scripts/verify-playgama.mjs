@@ -365,3 +365,23 @@ test('failed ad subscription and cleanup still release requests', async t => {
   f.adapter.dispose();
   assert.deepEqual(await pending, { success: false });
 });
+
+
+test('format availability keeps rewarded UI separate from interstitial support', async t => {
+  const f = fixture(t);
+  const manager = new PlatformManager({ adapter: f.adapter });
+  assert.equal(manager.isRewardedAvailable(), false);
+  await manager.init();
+  assert.equal(manager.isRewardedAvailable(), true);
+  assert.equal(manager.isInterstitialAvailable(), true);
+  f.advertisement.isRewardedSupported = false;
+  assert.equal(manager.isRewardedAvailable(), false);
+  assert.equal(manager.isInterstitialAvailable(), true);
+  f.advertisement.isRewardedSupported = true;
+  f.advertisement.isInterstitialSupported = false;
+  assert.equal(manager.isRewardedAvailable(), true);
+  assert.equal(manager.isInterstitialAvailable(), false);
+  manager.dispose();
+  assert.equal(manager.isRewardedAvailable(), false);
+  assert.equal(manager.isInterstitialAvailable(), false);
+});

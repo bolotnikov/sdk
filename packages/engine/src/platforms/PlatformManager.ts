@@ -90,6 +90,16 @@ export class PlatformManager {
     );
   }
 
+  isInterstitialAvailable(): boolean {
+    return this.initialized && !this.disposed
+      && (this.adapter.isInterstitialAvailable?.() ?? this.isAdvertisingAvailable());
+  }
+
+  isRewardedAvailable(): boolean {
+    return this.initialized && !this.disposed
+      && (this.adapter.isRewardedAvailable?.() ?? this.isAdvertisingAvailable());
+  }
+
   reportGameCompletedPercentage(percentage: number): void {
     this.assertActive();
     if (!Number.isFinite(percentage) || percentage < 0 || percentage > 100) {

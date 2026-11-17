@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.16 — 2026-11-17
+
+- Expose independent interstitial and rewarded advertising capability queries through PlatformManager.
+- Read Playgama Bridge format support independently and retain legacy adapter fallbacks.
+- Cover capability changes, initialization and disposal in Playgama regression checks.
+
 ## 0.0.15 — 2026-11-14
 
 - Add optional Rigby2D skeletal animation through `/renderers/pixi/rigby`, with a declarative `RigbySkeleton` layout node, engine-clock playback and explicit resource ownership.
