@@ -2,6 +2,8 @@
 
 ## 0.0.16 — 2026-11-17
 
+- Preserve DiTokens factory callbacks when passed to higher-order DI registration.
+
 - Expose independent interstitial and rewarded advertising capability queries through PlatformManager.
 - Read Playgama Bridge format support independently and retain legacy adapter fallbacks.
 - Cover capability changes, initialization and disposal in Playgama regression checks.
