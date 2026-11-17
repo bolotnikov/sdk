@@ -2,6 +2,11 @@
 
 ## Changelog
 
+## 0.2.6 — 2026-11-17
+
+- Initialize Playgama Bridge before dynamically loading game entry modules, in development and production.
+- Keep SDK script synchronous and first in the head; preserve other platform startup behavior.
+
 **0.2.5 — 2026-11-17**
 
 - Require engine 0.0.16 and generate projects with independent rewarded/interstitial capability support.

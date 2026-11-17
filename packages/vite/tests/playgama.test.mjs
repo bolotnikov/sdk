@@ -45,3 +45,21 @@ test('Playgama environment is supported and injects only the Bridge v2 script', 
     assert.equal(existing.some(tag => tag.attrs?.src?.includes('playgama')), false);
   }
 });
+
+test('Bridge initialization settles before the game module can load', async () => {
+  const { PlaygamaBootstrapHtmlTransform } = await import('../dist/PlaygamaBootstrapHtmlTransform.js');
+  const html = PlaygamaBootstrapHtmlTransform.transform('<script type="module" src="./main.js"></script>');
+  const body = html.match(/<script[^>]*>([\s\S]*?)<\/script>/)[1];
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const start = new AsyncFunction('window', 'loadGame', body.replace('import(', 'loadGame('));
+  let finishInitialization;
+  let loaded = false;
+  const pending = start({ bridge: { initialize: () => new Promise(resolve => { finishInitialization = resolve; }) } }, () => { loaded = true; });
+  assert.equal(loaded, false);
+  finishInitialization();
+  await pending;
+  assert.equal(loaded, true);
+  loaded = false;
+  await assert.rejects(start({ bridge: { initialize: async () => { throw new Error('offline'); } } }, () => { loaded = true; }), /offline/);
+  assert.equal(loaded, false);
+});

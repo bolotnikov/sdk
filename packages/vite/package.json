@@ -1,6 +1,6 @@
 {
   "name": "@gamedevland/vite",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "type": "module",
   "description": "Vite build tooling for Gamedev Land HTML5 games.",
   "license": "MIT",
