@@ -1,4 +1,5 @@
 import { BuildPlatformSdkCatalog } from './BuildPlatformSdkCatalog';
+import { PlaygamaBootstrapHtmlTransform } from './PlaygamaBootstrapHtmlTransform';
 
 import type { Plugin } from 'vite';
 
@@ -12,12 +13,18 @@ export class BuildPlatformSdkInjectPluginFactory {
   ): Plugin {
     return {
       name: 'platform-sdk-inject',
-      transformIndexHtml() {
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html) {
         const headTags = BuildPlatformSdkCatalog.resolveHeadTags(platformId, options);
         if (headTags.length === 0) {
           return;
         }
-        return headTags;
+        return {
+          html: platformId === 'playgama' ? PlaygamaBootstrapHtmlTransform.transform(html) : html,
+          tags: headTags,
+        };
+        },
       },
     };
   }
