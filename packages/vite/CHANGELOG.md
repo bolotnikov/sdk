@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.5 — 2026-11-17
+
+- Update the engine peer and generated project dependencies to engine 0.0.16.
+
 ## 0.2.4 — 2026-11-14
 
 - Require engine 0.0.15 as the shared peer dependency.

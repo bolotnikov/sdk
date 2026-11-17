@@ -36,6 +36,8 @@ export interface PlatformAdapter {
   readonly muteAudioOnAdRequest?: boolean;
   /** Optional capabilities; unsupported adapters remain compatible. */
   isAdvertisingAvailable?(): boolean;
+  isInterstitialAvailable?(): boolean;
+  isRewardedAvailable?(): boolean;
   reportGameCompletedPercentage?(percentage: number): void;
   setGameContext?(context: Readonly<Record<string, string | number | boolean>>): void;
   clearGameContext?(): void;
