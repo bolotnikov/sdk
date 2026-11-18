@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.7 — 2026-11-18
+
+- Fall back to English when `VITE_DEFAULT_LOCALE` is unset or unsupported.
+- Require engine 0.0.17 as the shared peer and use it in generated projects.
+
 ## 0.2.6 — 2026-11-17
 
 - Initialize Playgama Bridge before dynamically loading game entry modules, in development and production.

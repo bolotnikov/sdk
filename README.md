@@ -18,6 +18,8 @@ such as `@gamedevland/engine/assets` and `@gamedevland/engine/scenes`.
 
 | Date | Package | Version | Summary |
 | --- | --- | --- | --- |
+| 2026-11-18 | Engine | [0.0.17](packages/engine/CHANGELOG.md#0017--2026-11-18) | Fall back to English when locale files or translations are unavailable. |
+| 2026-11-18 | Vite | [0.2.7](packages/vite/CHANGELOG.md#027--2026-11-18) | Normalize default locale settings and generate projects with engine 0.0.17. |
 | 2026-11-14 | Engine | [0.0.15](packages/engine/CHANGELOG.md#0015--2026-11-14) | Add declarative Rigby2D animation, binary/text assets, isolated texture sampling and opt-in DEV debugging/testing. |
 | 2026-11-14 | Vite | [0.2.4](packages/vite/CHANGELOG.md#024--2026-11-14) | Generate DEV debug/test wiring and require engine 0.0.15. |
 | 2026-11-11 | Engine | [0.0.14](packages/engine/CHANGELOG.md#0014--2026-11-11) | Add declarative ThreeViewport layouts and pointer lifecycle recovery. |
@@ -52,7 +54,7 @@ See the full [engine changelog](packages/engine/CHANGELOG.md),
 To create a blank game with dependencies installed:
 
 ```bash
-npx --yes --package @gamedevland/vite@0.2.4 gamedevland create my-game
+npx --yes --package @gamedevland/vite@0.2.7 gamedevland create my-game
 cd my-game
 npm run dev
 ```

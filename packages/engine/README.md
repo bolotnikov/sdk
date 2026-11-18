@@ -197,6 +197,11 @@ Source files are available in [the SDK repository](https://github.com/gamedevlan
 
 ## Changelog
 
+**0.0.17 — 2026-11-18**
+
+- Fall back to English when the selected locale file or translation is unavailable.
+- Keep valid entries in incomplete dictionaries and use the translation key when all fallbacks are exhausted.
+
 **0.0.12 — 2026-11-07**
 
 - Add Playgama Bridge v2: lifecycle, ads, language, host pause/audio and saved progress.
@@ -389,14 +394,20 @@ Earlier npm releases retain the license included in their respective archives. T
 `LocaleCatalog` recognizes `en`, `ru`, `es`, `pt-BR`, `de`, `fr`, `it`, `tr`,
 `zh-CN`, `ja`, and `ko`, including regional browser codes. Games opt into their
 own subset with `LocalesService.initialize({ supportedLocales, defaultLocale,
-deviceLocale, storageKey })`. Existing games retain their English/Russian subset.
+deviceLocale, storageKey })`. English is always available as a fallback.
+An unsupported or omitted configured default selects English.
 The priority is a saved manual choice, a device/platform hint, browser language
 preferences, then the configured default. Initialization never persists an
 automatic choice. `setLang()` persists manual choices, including selection of the
-current language; unavailable browser storage does not prevent play. Dictionaries
-must already be present in ConfigStore. `getRevision()` and `subscribe()` support
-live UI updates; `subscribe()` returns an unsubscribe function. Text-style locale
-overrides accept partial maps of supported languages.
+current language. Configure dictionary preloading in `system.boot.configs`.
+Missing or unreadable locale JSON files are skipped during config bootstrap.
+Lookups try the selected language, configured fallback languages, the configured
+default, and English. Missing, empty, or invalid entries are skipped individually.
+If no translation is available, `t()` returns the key with parameter interpolation
+and `has()` returns false. Dictionaries can be loaded later or replaced in
+ConfigStore and will be used on the next lookup. `getLang()` reports the selected
+language. `getRevision()` and `subscribe()` support live language preference updates.
+Text-style locale overrides accept partial maps of supported languages.
 
 `Text.fitTo(width, height?)` shrinks the current font to fit measured local bounds
 without changing node transforms. Set the desired font, wrapping and content

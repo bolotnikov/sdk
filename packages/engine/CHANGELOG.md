@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.17 — 2026-11-18
+
+- Resolve missing, unreadable, or incomplete locale dictionaries through configured fallbacks and English.
+- Use the interpolated translation key when the fallback dictionaries lack a usable value.
+- Preserve valid translations in incomplete dictionaries and pick up late or replaced dictionaries on the next lookup.
+- Normalize platform language hints and recover from an unsupported configured default.
+- Cover English-only games under a Russian Playgama locale, malformed dictionaries, and failed locale asset loads.
+
 ## 0.0.16 — 2026-11-17
 
 - Preserve DiTokens factory callbacks when passed to higher-order DI registration.
