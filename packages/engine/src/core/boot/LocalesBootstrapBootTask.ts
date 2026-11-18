@@ -11,15 +11,11 @@ export class LocalesBootstrapBootTask implements EngineBootTask {
   ) {}
 
   async run(): Promise<void> {
-    const effectiveLocale = this.resolveEffectiveLocale();
-    this.localesService.setLang(effectiveLocale);
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = effectiveLocale;
-    }
+    this.localesService.setLang(this.resolveEffectiveLocale());
   }
 
   private resolveEffectiveLocale(): string {
-    const platformLocale = this.platformManager.getPreferredLocale();
+    const platformLocale = LocaleCatalog.normalize(this.platformManager.getPreferredLocale());
     if (platformLocale !== null) {
       return platformLocale;
     }

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { BuildDefaultLocaleEnvResolver } from '../packages/vite/dist/BuildDefaultLocaleEnvResolver.js';
 import { ConfigStore, LocaleCatalog, LocalesService } from '../packages/engine/dist/sdk.js';
 const codes = ['en','ru','es','pt-BR','de','fr','it','tr','zh-CN','ja','ko'];
 for (const [hint, expected] of [['PT_br','pt-BR'],['pt-PT','pt-BR'],['zh-Hans-CN','zh-CN'],['zh-TW','zh-CN'],['es-MX','es'],['ru_RU','ru'],['xx',null]]) assert.equal(LocaleCatalog.normalize(hint), expected);
@@ -39,7 +40,18 @@ assert.equal(next.getLang(), 'fr');
 const legacy = new LocalesService(configs);
 legacy.setLang('ja');
 assert.equal(legacy.getLang(), 'en', 'Existing two-locale games must retain their supported subset');
-assert.throws(() => next.initialize({supportedLocales:['ru']}), /Default locale/);
+next.initialize({supportedLocales:['ru'],defaultLocale:'de',preferredLocales:[]});
+assert.equal(next.getLang(), 'en', 'English is available as the default regardless of the configured subset');
+const previousDefault = process.env.VITE_DEFAULT_LOCALE;
+try {
+  for (const [hint, expected] of [['', 'en'], ['   ', 'en'], ['invalid', 'en'], ['ru_RU', 'ru']]) {
+    process.env.VITE_DEFAULT_LOCALE = hint;
+    assert.equal(BuildDefaultLocaleEnvResolver.resolve('test', process.cwd()), expected);
+  }
+} finally {
+  if (previousDefault === undefined) delete process.env.VITE_DEFAULT_LOCALE;
+  else process.env.VITE_DEFAULT_LOCALE = previousDefault;
+}
 console.log('Locale preferences: aliases, precedence, persistence, fallback, events, blocked storage and compatibility passed.');
 const { Text } = await import('../packages/engine/dist/renderers/pixi.js');
 const view = {

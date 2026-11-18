@@ -1,5 +1,8 @@
 # @gamedevland/vite
 
+`VITE_DEFAULT_LOCALE` sets the default language hint for the game.
+An unset or unsupported value falls back to English.
+
 ## Changelog
 
 ## 0.2.6 — 2026-11-17
