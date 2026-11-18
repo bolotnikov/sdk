@@ -197,6 +197,11 @@ Source files are available in [the SDK repository](https://github.com/gamedevlan
 
 ## Changelog
 
+**0.0.17 — 2026-11-18**
+
+- Fall back to English when the selected locale file or translation is unavailable.
+- Keep valid entries in incomplete dictionaries and use the translation key when all fallbacks are exhausted.
+
 **0.0.12 — 2026-11-07**
 
 - Add Playgama Bridge v2: lifecycle, ads, language, host pause/audio and saved progress.

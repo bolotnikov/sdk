@@ -6,10 +6,8 @@ only from `main` with a public source repository; validation-only runs remain av
 
 ## Current release
 
-Engine `0.0.14` and tooling `0.2.3` add declarative embedded Three layouts and
-preserve the Rings pointer lifecycle fixes alongside the renderer/runtime ownership changes.
-Review both migration guides before upgrading existing games. The tooling declares
-the engine as a peer so consumers use one runtime copy.
+Engine `0.0.17` and tooling `0.2.7` make locale resolution resilient to missing files,
+invalid dictionary entries, and unsupported defaults. Tooling uses the engine as a peer.
 
 ## Release procedure
 

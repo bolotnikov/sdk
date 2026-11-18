@@ -5,6 +5,11 @@ An unset or unsupported value falls back to English.
 
 ## Changelog
 
+**0.2.7 — 2026-11-18**
+
+- Fall back to English for unset or unsupported default locale hints.
+- Generate projects with the shared engine 0.0.17 peer.
+
 ## 0.2.6 — 2026-11-17
 
 - Initialize Playgama Bridge before dynamically loading game entry modules, in development and production.
@@ -26,7 +31,7 @@ An unset or unsupported value falls back to English.
 ## Create a blank game
 
 ```sh
-npx --yes --package @gamedevland/vite@0.2.4 gamedevland create my-game
+npx --yes --package @gamedevland/vite@0.2.7 gamedevland create my-game
 cd my-game
 npm run dev
 ```
