@@ -26,7 +26,7 @@ An unset or unsupported value falls back to English.
 - Generate DEV-only GameDebug, silent test mode and DOM snapshots with HMR cleanup.
 - Ignore raw art/reference roots and verify debug code stays out of production builds.
 
-[Full changelog](https://github.com/gamedevland/sdk/blob/main/packages/vite/CHANGELOG.md).
+[Full changelog](https://github.com/bolotnikov/sdk/blob/main/packages/vite/CHANGELOG.md).
 
 ## Create a blank game
 
@@ -143,7 +143,7 @@ See the [official Poki CLI](https://github.com/poki/poki-cli). The browser runti
 
 ## License
 
-MIT. See [LICENSE](./LICENSE). Source code and contributions: [gamedevland/sdk](https://github.com/gamedevland/sdk).
+MIT. See [LICENSE](./LICENSE). Source code and contributions: [bolotnikov/sdk](https://github.com/bolotnikov/sdk).
 
 Earlier npm releases retain the license included in their respective archives. Third-party dependencies retain their own licenses.
 

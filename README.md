@@ -47,7 +47,7 @@ such as `@gamedevland/engine/assets` and `@gamedevland/engine/scenes`.
 | — | Vite | [0.0.1](packages/vite/CHANGELOG.md#001) | First npm release of the Vite tooling. |
 
 See the full [engine changelog](packages/engine/CHANGELOG.md),
-[Vite changelog](packages/vite/CHANGELOG.md), and [GitHub releases](https://github.com/gamedevland/sdk/releases).
+[Vite changelog](packages/vite/CHANGELOG.md), and [GitHub releases](https://github.com/bolotnikov/sdk/releases).
 
 ## Install
 
@@ -78,7 +78,7 @@ follow [the renderer migration](packages/engine/MIGRATION_RENDERERS.md) and
 ## Work on the SDK
 
 ```bash
-git clone https://github.com/gamedevland/sdk.git
+git clone https://github.com/bolotnikov/sdk.git
 cd sdk
 npm ci
 npm run build
@@ -94,7 +94,7 @@ the complete editable source is maintained here.
 ## Contributing and support
 
 Bug reports and focused pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md)
-for checks and architecture conventions. Use [GitHub Issues](https://github.com/gamedevland/sdk/issues)
+for checks and architecture conventions. Use [GitHub Issues](https://github.com/bolotnikov/sdk/issues)
 for reproducible bugs and feature proposals. See [SECURITY.md](SECURITY.md) for private vulnerability reports.
 
 ## License

@@ -193,7 +193,7 @@ The npm package intentionally ships a compact public distribution:
 - `dist/types/**` - declarations with independent renderer import graphs
 - `README.md`, `LICENSE`, and `package.json`
 
-Source files are available in [the SDK repository](https://github.com/gamedevland/sdk/tree/main/packages/engine/src); the npm archive contains the compiled distribution.
+Source files are available in [the SDK repository](https://github.com/bolotnikov/sdk/tree/main/packages/engine/src); the npm archive contains the compiled distribution.
 
 ## Changelog
 
@@ -207,7 +207,7 @@ Source files are available in [the SDK repository](https://github.com/gamedevlan
 - Add Playgama Bridge v2: lifecycle, ads, language, host pause/audio and saved progress.
 - Keep existing platform APIs; select the adapter with `VITE_PLATFORM=playgama`.
 
-[Full engine changelog](https://github.com/gamedevland/sdk/blob/main/packages/engine/CHANGELOG.md).
+[Full engine changelog](https://github.com/bolotnikov/sdk/blob/main/packages/engine/CHANGELOG.md).
 
 ## Install
 
@@ -385,7 +385,7 @@ The experimental package is also checked with `skipLibCheck: false` in clean cor
 
 ## License
 
-MIT. See [LICENSE](./LICENSE). Source code and contributions: [gamedevland/sdk](https://github.com/gamedevland/sdk).
+MIT. See [LICENSE](./LICENSE). Source code and contributions: [bolotnikov/sdk](https://github.com/bolotnikov/sdk).
 
 Earlier npm releases retain the license included in their respective archives. Third-party dependencies retain their own licenses.
 

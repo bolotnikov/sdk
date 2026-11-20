@@ -154,12 +154,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gamedevland/sdk.git",
+    "url": "git+https://github.com/bolotnikov/sdk.git",
     "directory": "packages/engine"
   },
-  "homepage": "https://github.com/gamedevland/sdk/tree/main/packages/engine#readme",
+  "homepage": "https://github.com/bolotnikov/sdk/tree/main/packages/engine#readme",
   "bugs": {
-    "url": "https://github.com/gamedevland/sdk/issues"
+    "url": "https://github.com/bolotnikov/sdk/issues"
   },
   "devDependencies": {
     "@types/three": "^0.187.0",
