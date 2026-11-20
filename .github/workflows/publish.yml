@@ -121,14 +121,16 @@ jobs:
 
       - name: Stage engine through npm OIDC
         if: inputs.publish && (inputs.package == 'all' || inputs.package == 'engine')
+        working-directory: packages/engine
         run: |
-          version="$(node -p "require('./packages/engine/package.json').version")"
-          npm version "${version}-oidc-test.${GITHUB_RUN_ID}.${GITHUB_RUN_ATTEMPT}" --no-git-tag-version --ignore-scripts --workspace @gamedevland/engine
-          npm stage publish ./packages/engine --access public --tag oidc-check
+          version="$(node -p "require('./package.json').version")"
+          npm pkg set "version=${version}-oidc-test.${GITHUB_RUN_ID}.${GITHUB_RUN_ATTEMPT}" --workspaces=false
+          npm stage publish . --workspaces=false --access public --tag oidc-check
 
       - name: Stage Vite integration through npm OIDC
         if: inputs.publish && (inputs.package == 'all' || inputs.package == 'vite')
+        working-directory: packages/vite
         run: |
-          version="$(node -p "require('./packages/vite/package.json').version")"
-          npm version "${version}-oidc-test.${GITHUB_RUN_ID}.${GITHUB_RUN_ATTEMPT}" --no-git-tag-version --ignore-scripts --workspace @gamedevland/vite
-          npm stage publish ./packages/vite --access public --tag oidc-check
+          version="$(node -p "require('./package.json').version")"
+          npm pkg set "version=${version}-oidc-test.${GITHUB_RUN_ID}.${GITHUB_RUN_ATTEMPT}" --workspaces=false
+          npm stage publish . --workspaces=false --access public --tag oidc-check
